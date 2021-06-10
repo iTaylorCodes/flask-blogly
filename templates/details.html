@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block title %}User{% endblock %} {% block content %}
+
+<div class="card flex-row flex-wrap">
+	<div class="card-header img-thumbnail float-left">
+		<img src="{{user.image_url}}" alt="User image" style="max-width: 300px; height: auto" />
+	</div>
+	<div class="card-block px-2 py-5">
+		<h1 class="card-title">{{user.first_name}} {{user.last_name}}</h1>
+
+		<a href=""><button class="btn btn-primary">Edit</button></a>
+		<a href=""><button class="btn btn-danger">Delete</button></a>
+	</div>
+</div>
+{% endblock %}
