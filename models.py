@@ -54,4 +54,31 @@ class Post(db.Model):
     def friendly_date(self):
         """Returns a nicely formatted date."""
 
-        return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
+        return self.created_at.strftime('%a %b %-d  %Y, %-I:%M %p')
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    def __repr__(self):
+        tag = self
+        return f"<Tag id={tag.id} name={tag.name}>"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+
+    name = db.Column(db.String(25), nullable=False, unique=True)
+
+    posts = db.relationship('Post', secondary = 'post_tags', backref='tags',)
+
+class PostTag(db.Model):
+    __tablename__ = 'post_tags'
+
+    def __repr__(self):
+        post_tag = self
+        return f"<PostTag post_id={post_tag.post_id} tag_id={post_tag.tag_id}>"
+
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+
