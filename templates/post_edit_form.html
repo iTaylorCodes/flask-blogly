@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title %}Edit Post{% endblock %} {% block content %}
+
+<h1>Edit Post</h1>
+<form action="/posts/{{post.id}}/edit" method="POST">
+	<div class="form-group container">
+		<label for="title">Title</label>
+		<input type="text" name="title" class="form-control" value="{{post.title}}" />
+		<label for="content">Content</label>
+		<input type="text" name="content" class="form-control" value="{{post.content}}" />
+	</div>
+	<div class="container">
+		<button type="submit" class="btn btn-success float-end">Edit</button>
+		<a href="/posts/{{post.id}}"><button class="btn btn-outline-info float-end">Cancel</button></a>
+	</div>
+</form>
+
+{% endblock %}

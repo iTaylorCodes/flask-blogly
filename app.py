@@ -62,13 +62,9 @@ def edit_user(user_id):
     """Processes the user edits and updates db"""
     user = User.query.get_or_404(user_id)
 
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    image_url = request.form['image_url']
-
-    user.first_name = first_name
-    user.last_name = last_name
-    user.image_url = image_url
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    user.image_url = request.form['image_url']
 
     db.session.add(user)
     db.session.commit()
@@ -95,7 +91,7 @@ def show_add_post_form(user_id):
     return render_template('post_form.html', user=user)
 
 @app.route('/users/<int:user_id>/posts/new', methods=["POST"])
-def add_post(user_id):
+def handle_add_post_form(user_id):
     """Handler for adding a new post"""
     user = User.query.get_or_404(user_id)
 
@@ -114,3 +110,34 @@ def show_post_details(post_id):
     """Displays detail page for a post"""
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', post=post)
+
+@app.route('/posts/<int:post_id>/edit')
+def show_post_edit_form(post_id):
+    """Shows a form to edit a post, or to cancel and go back to user page"""
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_edit_form.html', post=post)
+
+@app.route('/posts/<int:post_id>/edit', methods=['POST'])
+def handle_post_edit_form(post_id):
+    """Handler for editing of a post."""
+    post = Post.query.get_or_404(post_id)
+
+    post.title = request.form['title']
+    post.content = request.form['content']
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/posts/{post.id}')
+
+
+@app.route('/posts/<int:post_id>/delete', methods=['POST'])
+def handle_post_delete(post_id):
+    """Handler for deleting of a post."""
+    post = Post.query.get_or_404(post_id)
+    user_id = post.user.id
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
