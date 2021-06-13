@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block title %}Edit Post{% endblock %} {% block content %}
 
 <h1>Edit Post</h1>
+
 <form action="/posts/{{post.id}}/edit" method="POST">
 	<div class="form-group container">
 		<label for="title">Title</label>
@@ -8,6 +9,30 @@
 		<label for="content">Content</label>
 		<input type="text" name="content" class="form-control" value="{{post.content}}" />
 	</div>
+
+	<div class="form-check">
+		{% for tag in tags %}
+		<div>
+			<input
+				class="form-check-input"
+				type="checkbox"
+				value="{{tag.id}}"
+				id="tag_{{tag.id}}"
+				{%
+				if
+				tag
+				in
+				post.tags
+				%}checked{%
+				endif
+				%}
+				name="tags"
+			/>
+			<label class="form-check-label" for="tag_{{tag.id}}"> {{tag.name}} </label>
+		</div>
+		{% endfor %}
+	</div>
+
 	<div class="container">
 		<button type="submit" class="btn btn-success float-end">Edit</button>
 		<a href="/posts/{{post.id}}"><button class="btn btn-outline-info float-end">Cancel</button></a>

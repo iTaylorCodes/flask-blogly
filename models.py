@@ -56,6 +56,17 @@ class Post(db.Model):
 
         return self.created_at.strftime('%a %b %-d  %Y, %-I:%M %p')
 
+class PostTag(db.Model):
+    __tablename__ = 'posts_tags'
+
+    def __repr__(self):
+        post_tag = self
+        return f"<PostTag post_id={post_tag.post_id} tag_id={post_tag.tag_id}>"
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
+
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+
 class Tag(db.Model):
     __tablename__ = 'tags'
 
@@ -69,16 +80,5 @@ class Tag(db.Model):
 
     name = db.Column(db.String(25), nullable=False, unique=True)
 
-    posts = db.relationship('Post', secondary = 'post_tags', backref='tags',)
-
-class PostTag(db.Model):
-    __tablename__ = 'post_tags'
-
-    def __repr__(self):
-        post_tag = self
-        return f"<PostTag post_id={post_tag.post_id} tag_id={post_tag.tag_id}>"
-
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
-
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+    posts = db.relationship('Post', secondary = 'posts_tags', backref='tags',)
 
