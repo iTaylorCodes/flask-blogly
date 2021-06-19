@@ -11,6 +11,8 @@ def connect_db(app):
 # MODELS GO BELOW!
 
 class User(db.Model):
+    """Table of users"""
+
     __tablename__ = 'users'
 
     def __repr__(self):
@@ -30,6 +32,8 @@ class User(db.Model):
     posts = db.relationship("Post", backref="user", cascade="all, delete-orphan")
 
 class Post(db.Model):
+    """Table of posts from users"""
+
     __tablename__ = 'posts'
 
     def __repr__(self):
@@ -57,6 +61,8 @@ class Post(db.Model):
         return self.created_at.strftime('%a %b %-d  %Y, %-I:%M %p')
 
 class PostTag(db.Model):
+    """Join table of posts and their tags/tags and their posts"""
+
     __tablename__ = 'posts_tags'
 
     def __repr__(self):
@@ -68,6 +74,8 @@ class PostTag(db.Model):
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
 
 class Tag(db.Model):
+    """Table of tags added to posts"""
+
     __tablename__ = 'tags'
 
     def __repr__(self):
